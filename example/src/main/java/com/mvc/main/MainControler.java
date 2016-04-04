@@ -2,21 +2,24 @@ package com.mvc.main;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.mvc.vo.User;
 
 @Controller
 public class MainControler {
 	@RequestMapping("/main.do")
 	public ModelAndView main(){
 		ModelAndView view = new ModelAndView();
-		
+		view.setViewName("/login");
 		return view;
 	}
 	
-	@RequestMapping("/str.do")
-	@ResponseBody
-	public String stringUrl(){
-		return "test string";
+	@RequestMapping("/login.do")
+	public ModelAndView login(User user){
+		ModelAndView view = new ModelAndView();
+		view.setViewName("/loginSuccess");
+		view.addObject(user);
+		return view;
 	}
 }
