@@ -1,15 +1,15 @@
 <%@ page contentType="text/html;charset=UTF-8" %>  
 <html>  
  <head>  
-   <title>JSP¼òµ¥µÇÂ¼ÊµÀý</title>  
+   <title>JSPç™»å½•</title>  
  </head>  
    
  <body>  
-  <h2>ÇëµÇÂ¼</h2>  
+  <h2>è¯·ç™»å½•</h2>  
   
   <form method="POST" action="/login.do"> 
    Login Name: <input type="text" name="name"><br>  
-   <input type="submit" value="µÇÂ¼"><br>  
+   <input type="submit" value="ç™»å½•"><br>  
   <form>   
  </body>  
 </html>  

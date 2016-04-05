@@ -22,4 +22,15 @@ public class MainControler {
 		view.addObject(user);
 		return view;
 	}
+	
+	@RequestMapping("/testExceptionHandler.do")
+	public ModelAndView testExceptionHandler(int i) {
+		if(i == 0){
+			throw new RuntimeException("±¨´í");
+		}
+		
+		ModelAndView view = new ModelAndView();
+		view.setViewName("/loginSuccess");
+		return view;
+	}
 }
