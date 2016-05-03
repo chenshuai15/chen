@@ -8,6 +8,7 @@ import com.mvc.vo.User;
 
 @Controller
 public class MainControler {
+	
 	@RequestMapping("/main.do")
 	public ModelAndView main(){
 		ModelAndView view = new ModelAndView();
