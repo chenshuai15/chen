@@ -14,7 +14,8 @@
 	</script>  
 	<body>
 		<form name="form" method="post">
-			错误信息：${exp.message}
+			exp:错误信息：${exp.message}</br>
+			runtimeException:${runtimeException.message}
 		</form>
 	</body>
 </html>

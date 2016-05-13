@@ -20,6 +20,7 @@ public class MyExceptionHandler {
 		ModelAndView model = new ModelAndView();
 		model.setViewName("/errorpages/error");
 		model.addObject("exp",ex);
+		model.addObject(ex);//不指定名字的情况下，会拿类名的shortName，这里取的是 runtimeException
 		return model;
 	}
 }
