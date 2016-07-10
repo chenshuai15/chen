@@ -106,6 +106,7 @@ public class JedisUtilTest {
 		jedis.lpush("java framework", "spring");
 		jedis.lpush("java framework", "struts");
 		jedis.lpush("java framework", "hibernate");
+		
 		// 再取出所有数据jedis.lrange是按范围取出，
 		// 第一个是key，第二个是起始位置，第三个是结束位置，jedis.llen获取长度 -1表示取得所有
 		System.out.println(jedis.lrange("java framework", 0, -1));

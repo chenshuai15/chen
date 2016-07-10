@@ -15,7 +15,11 @@
 	http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.0.xsd">
 	<context:component-scan base-package="com" />
 	<task:annotation-driven executor="executor"
-		scheduler="scheduler" /> 
+		scheduler="scheduler" />
 	<task:executor id="executor" pool-size="5" />
-	<task:scheduler id="scheduler" pool-size="10" /> 
+	<task:scheduler id="scheduler" pool-size="10" />
+
+	<bean id="singleServerConfig" class="org.redisson.SingleServerConfig">
+		<property name="address" value="127.0.0.1:6379" />
+	</bean>
 </beans>
