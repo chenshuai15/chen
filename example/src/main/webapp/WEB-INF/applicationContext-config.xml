@@ -18,8 +18,15 @@
 		scheduler="scheduler" />
 	<task:executor id="executor" pool-size="5" />
 	<task:scheduler id="scheduler" pool-size="10" />
-
-	<bean id="singleServerConfig" class="org.redisson.SingleServerConfig">
-		<property name="address" value="127.0.0.1:6379" />
+	
+	
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3309/chen" />
+		<property name="username" value="root" />
+		<property name="password" value="111111" />
+		<property name="maxActive" value="255" />
+		<property name="maxIdle" value="2" />
+		<property name="maxWait" value="120000" />
 	</bean>
 </beans>
