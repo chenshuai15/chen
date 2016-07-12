@@ -26,28 +26,28 @@ public class QuartzTest {
 		//resumeJob();
 	}
 	/**
-	 * ¿ªÊ¼Ò»¸ösimpleSchedule()µ÷¶È
+	 * å¼€å§‹ä¸€ä¸ªsimpleSchedule()è°ƒåº¦
 	 */
 	public static void startSchedule() {
 		try {
-			// 1¡¢´´½¨Ò»¸öJobDetailÊµÀı£¬Ö¸¶¨Quartz
+			// 1ã€åˆ›å»ºä¸€ä¸ªJobDetailå®ä¾‹ï¼ŒæŒ‡å®šQuartz
 			JobDetail jobDetail = JobBuilder.newJob(MyJob.class)
-			// ÈÎÎñÖ´ĞĞÀà
+			// ä»»åŠ¡æ‰§è¡Œç±»
 					.withIdentity("job1_1", "jGroup1")
-					// ÈÎÎñÃû£¬ÈÎÎñ×é
+					// ä»»åŠ¡åï¼Œä»»åŠ¡ç»„
 					.build();
-			// 2¡¢´´½¨Trigger
+			// 2ã€åˆ›å»ºTrigger
 			SimpleScheduleBuilder builder = SimpleScheduleBuilder
 					.simpleSchedule()
-					// ÉèÖÃÖ´ĞĞ´ÎÊı
+					// è®¾ç½®æ‰§è¡Œæ¬¡æ•°
 				    .repeatSecondlyForTotalCount(100);
 			Trigger trigger = TriggerBuilder.newTrigger()
 					.withIdentity("trigger1_1", "tGroup1").startNow()
 					.withSchedule(builder).build();
-			// 3¡¢´´½¨Scheduler
+			// 3ã€åˆ›å»ºScheduler
 			Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
 			scheduler.start();
-			// 4¡¢µ÷¶ÈÖ´ĞĞ
+			// 4ã€è°ƒåº¦æ‰§è¡Œ
 			scheduler.scheduleJob(jobDetail, trigger);
 			try {
 				Thread.sleep(60000);
@@ -63,25 +63,25 @@ public class QuartzTest {
 	}
 
 	/**
-	 * ´ÓÊı¾İ¿âÖĞÕÒµ½ÒÑ¾­´æÔÚµÄjob£¬²¢ÖØĞÂ¿ª»§µ÷¶È
+	 * ä»æ•°æ®åº“ä¸­æ‰¾åˆ°å·²ç»å­˜åœ¨çš„jobï¼Œå¹¶é‡æ–°å¼€æˆ·è°ƒåº¦
 	 */
 	public static void resumeJob() {
 		try {
 
 			SchedulerFactory schedulerFactory = new StdSchedulerFactory();
 			Scheduler scheduler = schedulerFactory.getScheduler();
-			// ¢Ù»ñÈ¡µ÷¶ÈÆ÷ÖĞËùÓĞµÄ´¥·¢Æ÷×é
+			// â‘ è·å–è°ƒåº¦å™¨ä¸­æ‰€æœ‰çš„è§¦å‘å™¨ç»„
 			List<String> triggerGroups = scheduler.getTriggerGroupNames();
-			// ¢ÚÖØĞÂ»Ö¸´ÔÚtgroup1×éÖĞ£¬ÃûÎªtrigger1_1´¥·¢Æ÷µÄÔËĞĞ
+			// â‘¡é‡æ–°æ¢å¤åœ¨tgroup1ç»„ä¸­ï¼Œåä¸ºtrigger1_1è§¦å‘å™¨çš„è¿è¡Œ
 			for (int i = 0; i < triggerGroups.size(); i++) {
 				List<String> triggers = scheduler.getTriggerGroupNames();
 				for (int j = 0; j < triggers.size(); j++) {
 					Trigger tg = scheduler.getTrigger(new TriggerKey(triggers
 							.get(j), triggerGroups.get(i)));
-					// ¢Ú-1:¸ù¾İÃû³ÆÅĞ¶Ï
+					// â‘¡-1:æ ¹æ®åç§°åˆ¤æ–­
 					if (tg instanceof SimpleTrigger
 							&& tg.getDescription().equals("tgroup1.trigger1_1")) {
-						// ¢Ú-1:»Ö¸´ÔËĞĞ
+						// â‘¡-1:æ¢å¤è¿è¡Œ
 						scheduler.resumeJob(new JobKey(triggers.get(j),
 								triggerGroups.get(i)));
 					}

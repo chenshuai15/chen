@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
-	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:p="http://www.springframework.org/schema/p" xmlns:task="http://www.springframework.org/schema/task"
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:task="http://www.springframework.org/schema/task"
 	xsi:schemaLocation="
 	http://www.springframework.org/schema/beans 
 	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
@@ -14,19 +13,69 @@
 	http://www.springframework.org/schema/context/spring-context-2.5.xsd
 	http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.0.xsd">
 	<context:component-scan base-package="com" />
-	<task:annotation-driven executor="executor"
-		scheduler="scheduler" />
+
+	<task:annotation-driven executor="executor" scheduler="scheduler" />
 	<task:executor id="executor" pool-size="5" />
 	<task:scheduler id="scheduler" pool-size="10" />
-	
-	
+
+	<!-- 事务管理器(声明式事务) -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+
+	<!-- 注解依赖注入事务管理 -->
+	<!-- 关于事务的说明： -->
+	<!-- 1. @Transactional只能被应用到public方法上, 对于其它非public的方法，如果标记了@Transactional也不会报错，但方法没有事务功能 -->
+	<!-- 2. 默认情况下，事务只有在遇到RuntimeException时会回滚，遇到受查异常是不会回滚的，除非加上@Transactional(rollbackFor={Exception.class,其它异常}) -->
+	<!-- 3. 关于传播属性，参考conf/Spring事务传播.jpg或 org.springframework.transaction.annotation.Propagation -->
+	<tx:annotation-driven transaction-manager="transactionManager" order="1" />
+
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost:3309/chen" />
+		<property name="url" value="jdbc:mysql://localhost:3306/chen?useUnicode=true&amp;characterEncoding=utf-8" />
 		<property name="username" value="root" />
 		<property name="password" value="111111" />
 		<property name="maxActive" value="255" />
 		<property name="maxIdle" value="2" />
 		<property name="maxWait" value="120000" />
+	</bean>
+
+	<!-- 调度工厂 -->
+	<bean name="quartzScheduler" lazy-init="false" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="applicationContextSchedulerContextKey" value="applicationContext" />
+		<property name="configLocation" value="classpath:quartz.properties" />
+
+		<!-- 延迟30s执行 -->
+		<property name="startupDelay" value="30" />
+
+		<!--可选，QuartzScheduler 启动时更新己存在的Job，这样就不用每次修改targetObject后删除qrtz_job_details表对应记录了 -->
+		<property name="overwriteExistingJobs" value="true" />
+
+		<!-- 设置自动启动 -->
+		<property name="autoStartup" value="true" />
+
+		<!-- 注册触发器 -->
+		<property name="triggers">
+			<list>
+				<ref bean="trigger1" />
+			</list>
+		</property>
+
+		<!-- 注册jobDetail -->
+		<property name="jobDetails">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="task1" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="taskPojo" />
+		<property name="targetMethod" value="run" />
+	</bean>
+
+	<bean id="trigger1" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="task1" />
+		<property name="cronExpression" value="0/5 0 0 * * ?" />
 	</bean>
 </beans>

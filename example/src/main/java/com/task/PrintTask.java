@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class PrintTask {
 	
-//	@Scheduled(cron = "0 * * * * *")
+	@Scheduled(cron = "0 * * * * *")
 	public void printT(){
 		System.out.println("task execute!");
 	}
