@@ -43,6 +43,8 @@
 	<!-- 调度工厂 -->
 	<bean name="quartzScheduler" lazy-init="false" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="dataSource" ref="dataSource" />
+		<property name="transactionManager" ref="transactionManager" />
+		
 		<property name="applicationContextSchedulerContextKey" value="applicationContext" />
 		<property name="configLocation" value="classpath:quartz.properties" />
 
@@ -69,13 +71,14 @@
 		</property>
 	</bean>
 
-	<bean id="task1" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-		<property name="targetObject" ref="taskPojo" />
-		<property name="targetMethod" value="run" />
+	<bean id="jobTask" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="com.chen.quartz.task.TaskPojo" />
+		<!-- durability 表示任务完成之后是否依然保留到数据库，默认false -->
+		<property name="durability" value="true" />
 	</bean>
 
 	<bean id="trigger1" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-		<property name="jobDetail" ref="task1" />
-		<property name="cronExpression" value="0/5 0 0 * * ?" />
+		<property name="jobDetail" ref="jobTask" />
+		<property name="cronExpression" value="*/10 * * * * ?" />
 	</bean>
 </beans>

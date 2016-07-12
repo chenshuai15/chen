@@ -22,7 +22,8 @@ public class QuartzTest {
 	private static String TRIGGER_GROUP_NAME = "ddlibTrigger";
 	public static void main(String[] args) throws SchedulerException,
 			ParseException {
-		startSchedule();
+		removeJob();
+//		startSchedule();
 		//resumeJob();
 	}
 	/**
@@ -94,4 +95,24 @@ public class QuartzTest {
 
 		}
 	}
+	
+	/**
+	 * 从数据库中找到已经存在的job，并重新开户调度
+	 */
+	public static void removeJob() {
+		try {
+
+			SchedulerFactory schedulerFactory = new StdSchedulerFactory();
+			Scheduler scheduler = schedulerFactory.getScheduler();
+			
+				
+			// 删除运行
+			scheduler.deleteJob(new JobKey("job1_1",
+					"jGroup1"));
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
+	}
+	
 }
