@@ -40,20 +40,16 @@
 		<property name="maxWait" value="120000" />
 	</bean>
 
-	<!-- 调度工厂 -->
+	<!-- 调度工厂 ,随容器自动启动;随容器关闭（SchedulerFactoryBean 实现了DisposableBean接口，会自动调用destory方法去shutdow）-->
 	<bean name="quartzScheduler" lazy-init="false" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="dataSource" ref="dataSource" />
-		<property name="transactionManager" ref="transactionManager" />
-		
 		<property name="applicationContextSchedulerContextKey" value="applicationContext" />
 		<property name="configLocation" value="classpath:quartz.properties" />
 
 		<!-- 延迟30s执行 -->
 		<property name="startupDelay" value="30" />
-
 		<!--可选，QuartzScheduler 启动时更新己存在的Job，这样就不用每次修改targetObject后删除qrtz_job_details表对应记录了 -->
 		<property name="overwriteExistingJobs" value="true" />
-
 		<!-- 设置自动启动 -->
 		<property name="autoStartup" value="true" />
 

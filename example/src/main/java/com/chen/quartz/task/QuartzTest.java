@@ -1,4 +1,5 @@
 package com.chen.quartz.task;
+
 import java.text.ParseException;
 import java.util.List;
 
@@ -16,16 +17,12 @@ import org.quartz.TriggerKey;
 import org.quartz.impl.StdSchedulerFactory;
 
 public class QuartzTest {
-
-	private static SchedulerFactory sf = new StdSchedulerFactory();
-	private static String JOB_GROUP_NAME = "ddlib";
-	private static String TRIGGER_GROUP_NAME = "ddlibTrigger";
-	public static void main(String[] args) throws SchedulerException,
-			ParseException {
+	public static void main(String[] args) throws SchedulerException, ParseException {
 		removeJob();
-//		startSchedule();
-		//resumeJob();
+		// startSchedule();
+		// resumeJob();
 	}
+
 	/**
 	 * 开始一个simpleSchedule()调度
 	 */
@@ -37,14 +34,12 @@ public class QuartzTest {
 					.withIdentity("job1_1", "jGroup1")
 					// 任务名，任务组
 					.build();
+
 			// 2、创建Trigger
 			SimpleScheduleBuilder builder = SimpleScheduleBuilder
-					.simpleSchedule()
-					// 设置执行次数
-				    .repeatSecondlyForTotalCount(100);
-			Trigger trigger = TriggerBuilder.newTrigger()
-					.withIdentity("trigger1_1", "tGroup1").startNow()
-					.withSchedule(builder).build();
+			// 设置执行次数
+					.repeatSecondlyForTotalCount(100);
+			Trigger trigger = TriggerBuilder.newTrigger().withIdentity("trigger1_1", "tGroup1").startNow().withSchedule(builder).build();
 			// 3、创建Scheduler
 			Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
 			scheduler.start();
@@ -57,7 +52,6 @@ public class QuartzTest {
 			}
 
 			scheduler.shutdown();
-
 		} catch (SchedulerException e) {
 			e.printStackTrace();
 		}
@@ -77,14 +71,11 @@ public class QuartzTest {
 			for (int i = 0; i < triggerGroups.size(); i++) {
 				List<String> triggers = scheduler.getTriggerGroupNames();
 				for (int j = 0; j < triggers.size(); j++) {
-					Trigger tg = scheduler.getTrigger(new TriggerKey(triggers
-							.get(j), triggerGroups.get(i)));
+					Trigger tg = scheduler.getTrigger(new TriggerKey(triggers.get(j), triggerGroups.get(i)));
 					// ②-1:根据名称判断
-					if (tg instanceof SimpleTrigger
-							&& tg.getDescription().equals("tgroup1.trigger1_1")) {
+					if (tg instanceof SimpleTrigger && tg.getDescription().equals("tgroup1.trigger1_1")) {
 						// ②-1:恢复运行
-						scheduler.resumeJob(new JobKey(triggers.get(j),
-								triggerGroups.get(i)));
+						scheduler.resumeJob(new JobKey(triggers.get(j), triggerGroups.get(i)));
 					}
 				}
 
@@ -95,7 +86,7 @@ public class QuartzTest {
 
 		}
 	}
-	
+
 	/**
 	 * 从数据库中找到已经存在的job，并重新开户调度
 	 */
@@ -104,15 +95,12 @@ public class QuartzTest {
 
 			SchedulerFactory schedulerFactory = new StdSchedulerFactory();
 			Scheduler scheduler = schedulerFactory.getScheduler();
-			
-				
+
 			// 删除运行
-			scheduler.deleteJob(new JobKey("job1_1",
-					"jGroup1"));
+			scheduler.deleteJob(new JobKey("job1_1", "jGroup1"));
 		} catch (Exception e) {
 			e.printStackTrace();
 
 		}
 	}
-	
 }
