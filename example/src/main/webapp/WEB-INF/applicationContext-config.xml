@@ -65,7 +65,7 @@
 	</bean>
 
 	<bean id="jobTask" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
-		<property name="jobClass" value="com.chen.quartz.task.TaskPojo" />
+		<property name="jobClass" value="com.chen.quartz.task.TaskJobBean" />
 		<!-- durability 表示任务完成之后是否依然保留到数据库，默认false -->
 		<property name="durability" value="true" />
 	</bean>
