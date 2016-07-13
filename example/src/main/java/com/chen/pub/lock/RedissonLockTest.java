@@ -7,7 +7,7 @@ import org.redisson.core.RLock;
 public class RedissonLockTest {
 
 	/**
-	 * Ê¹ÓÃipµØÖ·ºÍ¶Ë¿Ú´´½¨Redisson
+	 * ä½¿ç”¨ipåœ°å€å’Œç«¯å£åˆ›å»ºRedisson
 	 * 
 	 * @param ip
 	 * @param port
@@ -17,7 +17,7 @@ public class RedissonLockTest {
 		Config config = new Config();
 		config.useSingleServer().setAddress("127.0.0.1" + ":" + "6379");
 		Redisson redisson = (Redisson) Redisson.create(config);
-		System.out.println("³É¹¦Á¬½ÓRedis Server ·şÎñÆ÷");
+		System.out.println("æˆåŠŸè¿æ¥Redis Server æœåŠ¡å™¨");
 		return redisson;
 	}
 
