@@ -3,3 +3,4 @@
 .classpath
 *.prefs
 .project
+/.settings/
