@@ -3,17 +3,27 @@ package com.mvc.controler;
 import java.util.concurrent.TimeUnit;
 
 import org.redisson.core.RLock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.chen.acmq.consumer.SpringConsumer;
+import com.chen.acmq.producter.SpringProducer;
 import com.chen.pub.lock.KeyLock;
 import com.mvc.vo.User;
 
 @Controller
 public class MainControler {
+	
+	@Autowired
+	private SpringConsumer consumer;
+	
+	@Autowired
+	private SpringProducer producter;
+	
 	@RequestMapping("/main.do")
 	public ModelAndView main(){
 		ModelAndView view = new ModelAndView();
@@ -32,7 +42,7 @@ public class MainControler {
 	@RequestMapping("/testExceptionHandler.do")
 	public ModelAndView testExceptionHandler(int i) {
 		if(i == 0){
-			throw new RuntimeException("±¨´í");
+			throw new RuntimeException("ï¿½ï¿½ï¿½ï¿½");
 		}
 		
 		ModelAndView view = new ModelAndView();
@@ -42,7 +52,7 @@ public class MainControler {
 	
 	@RequestMapping("/testParams.do")
 	@ResponseBody
-	public String testParams(@RequestParam(value = "userName", required = true,defaultValue = "ÀîÃ÷") String name){
+	public String testParams(@RequestParam(value = "userName", required = true,defaultValue = "ï¿½ï¿½ï¿½ï¿½") String name){
 		
 		return name;
 	}
@@ -61,10 +71,19 @@ public class MainControler {
 			try{
 				lock.unlock();
 			}catch(Exception ex){
-				//³Ôµô
+				//ï¿½Ôµï¿½
 			}
 			KeyLock.getInstance().shutdown();
 		}
+		return "success";
+	}
+	
+	@RequestMapping("/testMQ.do")
+	@ResponseBody
+	public String testMQ() {
+		producter.send();
+//		consumer.recive();
+		
 		return "success";
 	}
 }
