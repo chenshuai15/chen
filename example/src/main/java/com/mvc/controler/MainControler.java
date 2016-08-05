@@ -2,12 +2,17 @@ package com.mvc.controler;
 
 import java.util.concurrent.TimeUnit;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.redisson.core.RLock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.chen.acmq.consumer.SpringConsumer;
@@ -71,7 +76,6 @@ public class MainControler {
 			try{
 				lock.unlock();
 			}catch(Exception ex){
-				//�Ե�
 			}
 			KeyLock.getInstance().shutdown();
 		}
@@ -81,7 +85,11 @@ public class MainControler {
 	@RequestMapping("/testMQ.do")
 	@ResponseBody
 	public String testMQ() {
-		producter.send();
+		RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+		HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
+		String msg = request.getParameter("msg");
+		
+		producter.send(msg);
 //		consumer.recive();
 		
 		return "success";

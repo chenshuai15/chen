@@ -16,11 +16,11 @@ public class SpringProducer {
 	@Autowired
 	private JmsTemplate jmsTemplate;
 
-	public void send() {
+	public void send(final String msg) {
 		// 使用JMSTemplate可以很简单的实现发送消息
 		jmsTemplate.send(new MessageCreator() {
 			public Message createMessage(Session session) throws JMSException {
-				return session.createTextMessage("地瓜！地瓜！");
+				return session.createTextMessage(msg);
 			}
 		});
 	}
