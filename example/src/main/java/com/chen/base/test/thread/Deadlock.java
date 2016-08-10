@@ -1,4 +1,4 @@
-package com.chen.base.test;
+package com.chen.base.test.thread;
 
 /**
  * 当线程需要同时持有多个锁时，有可能产生死锁。考虑如下情形：

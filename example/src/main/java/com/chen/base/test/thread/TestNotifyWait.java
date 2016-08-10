@@ -1,4 +1,4 @@
-package com.chen.base.test;
+package com.chen.base.test.thread;
 
 /**
  * 线程间通过wait notify进行通信
