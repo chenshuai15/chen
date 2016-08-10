@@ -7,5 +7,4 @@ public class JAVAProxyImp implements IJAVAProxyA {
 		System.out.println("I'm real obj!!");
 		return null;
 	}
-
 }
