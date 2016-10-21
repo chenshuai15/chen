@@ -33,6 +33,8 @@ public class ProxyTest {
 	     enhancer.setCallback( new CglibJAVAProxy() );
 	     JAVAProxyImp my = (JAVAProxyImp)enhancer.create();
 	     my.sayHello();
+	     
+	     System.out.println(System.getProperty("file.encoding"));
 	}
 
 }
