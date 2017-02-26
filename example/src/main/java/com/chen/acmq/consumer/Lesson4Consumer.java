@@ -6,7 +6,6 @@ import javax.jms.MessageListener;
 import javax.jms.TextMessage;
 
 public class Lesson4Consumer implements MessageListener {
-
 	@Override
 	public void onMessage(Message message) {
 		TextMessage textMsg = (TextMessage) message;
